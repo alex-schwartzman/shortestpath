@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * rather than deleting the real-network coverage it provides.
  */
 @SpringBootTest
-class CountryDataServiceLiveFetchTest {
+class CountryDataServiceLiveFetchIT {
 
     @Autowired
     private CountryDataService springManagedService;

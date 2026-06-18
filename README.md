@@ -57,22 +57,30 @@ is required.
 
 ## Running the tests
 
+### Unit tests only (fast, no network)
+
 ```bash
-mvn clean test
+mvn test
 ```
 
-This runs the full test suite, including tests that hit the live GitHub
-data source (see [Testing strategy](#testing-strategy)) — an internet
-connection is required for the full suite to pass.
+### Full suite including integration tests (requires network)
+
+```bash
+mvn verify
+```
+
+Integration tests (the `*IT` classes) run under Maven Failsafe in the
+`integration-test` phase. They hit the live GitHub data source and require
+an internet connection. `mvn test` deliberately skips them so the fast,
+offline feedback loop isn't blocked on network availability.
 
 ### Test coverage
 
-The same `mvn clean test` command also generates a coverage report via
-JaCoCo, at `target/site/jacoco/index.html`. Open it in any browser — no IDE
-required. (If you're working in IntelliJ, its built-in "Run with Coverage"
-action is a faster way to check coverage interactively while iterating; the
-Maven command above is the tool-independent path that doesn't depend on
-IntelliJ specifically.)
+`mvn test` (or `mvn verify`, which runs the `test` phase first) generates a
+JaCoCo coverage report at `target/site/jacoco/index.html`. Open it in any
+browser — no IDE required. (If you're working in IntelliJ, its built-in
+"Run with Coverage" action is a faster way to check coverage interactively
+while iterating; the Maven command is the tool-independent path.)
 
 ## API contract
 
@@ -204,21 +212,23 @@ to the real, live dataset:
   hand-verified real subset of the actual CZE/AUT/ITA-area border data,
   proving the spec's literal example holds against real-world adjacency
   facts, without needing the network.
-- **`RoutingServiceLiveIntegrationTest`** / **`CountryDataServiceLiveFetchTest`**
-  — no mocking anywhere: real GitHub fetch, real deserialization, real BFS.
-  Slower and dependent on network/GitHub availability, but the only tests
-  proving the system works against the *live*, current upstream dataset.
+- **`RoutingServiceLiveIT`** / **`CountryDataServiceLiveFetchIT`** /
+  **`CountryDataServiceFetchFailureIT`** — no mocking anywhere: real GitHub
+  fetch, real deserialization, real BFS. Slower and dependent on
+  network/GitHub availability, but the only tests proving the system works
+  against the *live*, current upstream dataset. Run under Failsafe
+  (`mvn verify`), not Surefire, so they don't block the fast offline loop.
 - **`RoutingControllerMockMvcTest`** — the HTTP/controller/exception-handler
   layer, via `MockMvc`, with `RoutingService` mocked. Proves
   `RoutingController` and `GlobalExceptionHandler` are wired correctly
   without needing a real network call or a real algorithm run.
-- **`RoutingControllerIntegrationTest`** — the complete system: a real
-  embedded server, real HTTP requests, nothing mocked anywhere in the
-  chain. Includes a non-percolation case (France → Argentina) that's
-  meaningfully stronger than a simple disconnected-island check: both
-  countries are real, richly-connected nodes in large connected
-  components, so this exercises BFS actually exhausting a large search
-  space before correctly concluding no route exists, rather than the
-  trivial case of a node with zero neighbors at all.
+- **`RoutingControllerIT`** — the complete system: a real embedded server,
+  real HTTP requests, nothing mocked anywhere in the chain. Includes a
+  non-percolation case (France → Argentina) that's meaningfully stronger
+  than a simple disconnected-island check: both countries are real,
+  richly-connected nodes in large connected components, so this exercises
+  BFS actually exhausting a large search space before correctly concluding
+  no route exists, rather than the trivial case of a node with zero
+  neighbors at all. Runs under Failsafe (`mvn verify`).
 
-Run `mvn clean test` to run everything.
+Run `mvn test` for the fast offline suite, `mvn verify` for everything.

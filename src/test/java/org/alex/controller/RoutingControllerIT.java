@@ -10,11 +10,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Full REST API test: a real embedded server, real HTTP requests over a
- * real socket, real RoutingController + GlobalExceptionHandler — but
- *
+ * real socket, real RoutingController + GlobalExceptionHandler
  */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class RoutingControllerIntegrationTest {
+class RoutingControllerIT {
 
     @LocalServerPort
     private int port;

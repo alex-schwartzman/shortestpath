@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
  * CountryDataUnavailableException rather than some other exception type or
  * a silent failure.
  */
-class CountryDataServiceFetchFailureTest {
+class CountryDataServiceFetchFailureIT {
 
     @Test
     void throwsCountryDataUnavailableExceptionWhenUrlDoesNotExist() {

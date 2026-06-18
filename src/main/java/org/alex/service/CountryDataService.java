@@ -2,8 +2,8 @@ package org.alex.service;
 
 import org.alex.exception.CountryDataUnavailableException;
 import org.alex.model.Borders;
-import org.alex.model.in.Country;
 import org.alex.model.IsoCode;
+import org.alex.model.in.Country;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * Fetches country border data from the upstream GitHub source and exposes
  * it as an immutable {@link Borders} graph.
- *
+ * <p>
  * The fetch + deserialize + graph-building pipeline runs at most once per
  * cache entry: {@link #getBorders()} is cached via {@code @Cacheable}, so
  * subsequent calls return the same already-built {@link Borders} instance
@@ -29,12 +29,12 @@ import java.util.Set;
  * ever crosses this method's boundary; the intermediate {@code List<Country>}
  * and {@code Map} built along the way are local to this method and never
  * shared, so there is nothing mutable for callers to accidentally corrupt.
- *
+ * <p>
  * A failed fetch or parse throws {@link CountryDataUnavailableException}
  * rather than returning null or an empty graph. Spring's {@code @Cacheable}
  * does not cache thrown exceptions, so a transient upstream failure does not
  * permanently poison the cache — the next request will simply retry the fetch.
- *
+ * <p>
  * NOTE on response Content-Type: raw.githubusercontent.com always serves
  * file contents as "text/plain", regardless of the actual file type — this
  * is documented, deliberate GitHub behavior, not a misconfiguration, and not
@@ -81,7 +81,8 @@ public class CountryDataService {
             List<Country> countries = restClient.get()
                     .uri(countriesJsonUrl)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<List<Country>>() {});
+                    .body(new ParameterizedTypeReference<List<Country>>() {
+                    });
 
             if (countries == null) {
                 throw new CountryDataUnavailableException(
@@ -100,7 +101,8 @@ public class CountryDataService {
     private Map<IsoCode, Set<IsoCode>> buildAdjacency(List<Country> countries) {
         Map<IsoCode, Set<IsoCode>> adjacency = new HashMap<>();
         for (Country country : countries) {
-            adjacency.put(country.id(), Set.copyOf(country.neighbors()));
+            adjacency.put(country.id(),
+                    country.neighbors() != null ? Set.copyOf(country.neighbors()) : Set.of());
         }
         return adjacency;
     }

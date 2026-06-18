@@ -35,12 +35,12 @@ class RoutingServiceRealDataTest {
 
     // Real cca3 codes, real borders, verified against the live dataset:
     private final IsoCode cze = new IsoCode("CZE"); // borders: AUT, DEU, POL, SVK
-    private final IsoCode aut = new IsoCode("AUT"); // borders: CZE, DEU, HUN, ITA, LIE, SVK, SVN, CHE
+    private final IsoCode aut = new IsoCode("AUT"); // borders: CZE, DEU, HUN, ITA, SVK, SVN, CHE
     private final IsoCode ita = new IsoCode("ITA"); // borders: AUT, FRA, SMR, SVN, CHE, VAT
     private final IsoCode deu = new IsoCode("DEU"); // borders: AUT, BEL, CZE, DNK, FRA, LUX, NLD, POL, CHE
     private final IsoCode pol = new IsoCode("POL"); // borders: BLR, CZE, DEU, LTU, RUS, SVK, UKR
     private final IsoCode svk = new IsoCode("SVK"); // borders: AUT, CZE, HUN, POL, UKR
-    private final IsoCode che = new IsoCode("CHE"); // borders: AUT, FRA, ITA, LIE, DEU
+    private final IsoCode che = new IsoCode("CHE"); // borders: AUT, FRA, ITA, DEU
     private final IsoCode svn = new IsoCode("SVN"); // borders: AUT, HRV, ITA, HUN
     private final IsoCode hun = new IsoCode("HUN"); // borders: AUT, HRV, ROU, SRB, SVK, SVN, UKR
 

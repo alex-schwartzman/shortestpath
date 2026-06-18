@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * CountryDataService just needs a RestClient.Builder and a URL. Caching
  * behavior itself is covered separately in CountryDataServiceLiveFetchTest.
  */
-class RoutingServiceLiveIntegrationTest {
+class RoutingServiceLiveIT {
 
     @Test
     void specExampleHoldsAgainstRealLiveData() {
