@@ -21,6 +21,16 @@ class RoutingControllerIT {
     private final TestRestTemplate restTemplate = new TestRestTemplate();
 
     @Test
+    void getRoutingCzeToItaReturnsTwoHopsHttp() {
+        String url = "http://localhost:" + port + "/hops/CZE/ITA";
+
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+
+        assertThat(response.getStatusCode().value()).isEqualTo(200);
+        assertThat(response.getBody()).isEqualTo("2");
+    }
+    
+    @Test
     void getRoutingCzeToItaReturnsExpectedRouteOverRealHttp() {
         String url = "http://localhost:" + port + "/routing/CZE/ITA";
 
