@@ -36,7 +36,7 @@ public class RoutingService {
         this.countryDataService = countryDataService;
     }
 
-    public String findRoute(IsoCode origin, IsoCode destination) {
+    public String hops(IsoCode origin, IsoCode destination) {
         return String.valueOf(findRoute(origin, destination));
     }
 
