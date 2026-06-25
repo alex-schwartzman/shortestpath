@@ -36,6 +36,11 @@ public class RoutingService {
         this.countryDataService = countryDataService;
     }
 
+    public String findRoute(IsoCode origin, IsoCode destination) {
+        return String.valueOf(findRoute(origin, destination));
+    }
+
+    
     /**
      * @return the shortest land route from origin to destination, inclusive
      * of both endpoints. If origin equals destination, returns a
