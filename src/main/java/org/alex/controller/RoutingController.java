@@ -34,4 +34,12 @@ public class RoutingController {
 
         return new RouteResponse(route);
     }
+
+    @GetMapping("/hops/{origin}/{destination}")
+    public String hops(@PathVariable String origin, @PathVariable String destination) {
+        IsoCode originCode = new IsoCode(origin);
+        IsoCode destinationCode = new IsoCode(destination);
+
+        return routingService.hops(originCode, destinationCode);
+    }    
 }
